@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<!-- Fig. 16.5: SwitchContent.html -->
+<!-- Asynchronously display content without reloading the page. -->
+<html>
+<head>
+   <meta charset = "utf-8">
+   <style type = "text/css">
+      .box { border: 1px solid black; padding: 10px }
+   </style>
+   <title>Switch Content Asynchronously</title>
+   <script>
+      var asyncRequest; // variable to hold XMLHttpRequest object
+
+      // set up event handlers
+      function registerListeners()
+      {
+         var img;
+         img = document.getElementById( "rm" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "InfoFiles/rm.html" ); }, false ); 
+         img.addEventListener( "mouseout", clearContent, false ); 
+         img = document.getElementById( "juve" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "InfoFiles/juve.html" ); }, false ); 
+         img.addEventListener( "mouseout", clearContent, false ); 
+         img = document.getElementById( "mufc" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "InfoFiles/mufc.html" ); }, false ); 
+         img.addEventListener( "mouseout", clearContent, false ); 
+         img = document.getElementById( "cfc" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "InfoFiles/cfc.html" ); }, false ); 
+         img.addEventListener( "mouseout", clearContent, false ); 
+         img = document.getElementById( "psg" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "InfoFiles/psg.html" ); }, false );
+         img.addEventListener( "mouseout", clearContent, false ); 
+         img = document.getElementById( "bmc" );
+         img.addEventListener( "mouseover", 
+            function() { getContent( "InfoFiles/bmc.html" ); }, false ); 
+         img.addEventListener( "mouseout", clearContent, false ); 
+      } // end function registerListeners
+
+      // set up and send the asynchronous request.
+      function getContent( url )
+      {
+         // attempt to create XMLHttpRequest object and make the request
+         try
+         {
+            asyncRequest = new XMLHttpRequest(); // create request object
+
+            // register event handler
+            asyncRequest.addEventListener(
+               "readystatechange", stateChange, false); 
+            asyncRequest.open( "GET", url, true ); // prepare the request
+            asyncRequest.send( null ); // send the request
+         } // end try
+         catch ( exception )
+         {
+            alert( "Request failed." );
+         } // end catch
+      } // end function getContent
+      
+      // displays the response data on the page
+      function stateChange()
+      {
+         if ( asyncRequest.readyState == 4 && asyncRequest.status == 200 )
+         {
+            document.getElementById( "contentArea" ).innerHTML = 
+               asyncRequest.responseText; // places text in contentArea
+         } // end if
+      } // end function stateChange
+
+      // clear the content of the box
+      function clearContent()
+      {
+         document.getElementById( "contentArea" ).innerHTML = "";
+      } // end function clearContent
+
+      window.addEventListener( "load", registerListeners, false );
+   </script>
+</head>
+<body>
+   <h1>My favourite sports teams.</h1>
+   <h3>Hover mouse over the images to see more information about them:</h3>
+   <table border="1">
+      <tr>
+         <td>
+            <img id = "rm" alt = "Real Madrid" width="150"
+               src = "./images/thumbs/rm.png">
+         </td>
+         <td>
+            <img id = "juve" alt = "Juventus" width="150"
+               src = "./images/thumbs/juve.png">
+         </td>
+   
+   
+      <td>
+         <img id = "mufc" alt = "Manchester United" width="150"
+            src = "./images/thumbs/mufc.jpg">
+      </td>
+   </tr>
+   <tr>
+      <td>
+         <img id = "cfc" alt = "Chelsea Football Club" width="150"
+            src = "./images/thumbs/cfc.jpg">
+      </td>
+     <td>
+         <img id = "psg" alt = "Paris-Saint Germain"  width="150"
+            src = "./images/thumbs/psg.jpg">
+      </td>
+      <td>
+         <img id = "bmc" alt = "Bayern Munchen" width="150"
+            src = "./images/thumbs/bmc.png">
+      </td>
+   </tr>
+   
+</table>
+<div class = "box" id = "contentArea"></div>
+</body>
+</html>
+
